@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form for Model {{ model_id }}</title>
+    <script type="text/javascript">
+        function toggleConditionalField(conditionalFieldId, triggerField) {
+            var conditionalField = document.getElementById(conditionalFieldId);
+            conditionalField.style.display = triggerField.checked ? 'block' : 'none';
+        }
+
+        window.onload = function() {
+            // Find all radio fields that have data-conditional-target attribute
+            var conditionalRadios = document.querySelectorAll('input[type=radio][data-conditional-target]');
+            conditionalRadios.forEach(function(radio) {
+                // Attach an event listener to toggle the conditional field
+                radio.addEventListener('change', function() {
+                    var targetId = radio.getAttribute('data-conditional-target');
+                    toggleConditionalField(targetId, radio);
+                });
+
+                // Trigger the change event on page load to set the initial state
+                if (radio.checked) {
+                    radio.dispatchEvent(new Event('change'));
+                }
+            });
+        };
+    </script>
+</head>
+<body>
+    <h1>Form for Model {{ model_id }}</h1>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        {% for field in form %}
+            {% if field.type != 'CSRFTokenField' and field.type != 'SubmitField' %}
+                <div id="div_{{ field.name }}">
+                    {{ field.label }}<br>
+                    {{ field }}
+                    {% if field.type == 'RadioField' and field.description %}
+                        {% set target_id = 'div_' + field.description %}
+                        {% for subfield in field %}
+                            <input type="radio" name="{{ field.name }}" value="{{ subfield.data }}"
+                                   data-conditional-target="{{ target_id }}"
+                                   {% if subfield.checked %} checked {% endif %}>
+                            {{ subfield.label }}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+        {{ form.submit() }}
+    </form>
+</body>
+</html>

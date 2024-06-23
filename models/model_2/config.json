@@ -1,0 +1,43 @@
+{
+    "excel_file": "data.xlsx",
+    "input_sheet": "Input",
+    "output_sheet": "Output",
+    "input_locations": {
+        "name": "B1",
+        "age": "B2",
+        "salary_per_month": "B3",
+        "department": "B4"
+    },
+    "output_locations": {
+        "Annual Income": "B1",
+        "Pension": "B2"
+    },
+    "form_fields": {
+        "name": {
+            "type": "string",
+            "label": "Name",
+            "required": true
+        },
+        "age": {
+            "type": "integer",
+            "label": "Age",
+            "required": true
+        },
+        "salary_per_month": {
+            "type": "integer",
+            "label": "Salary per Month",
+            "required": true
+        },
+        "department": {
+            "type": "select",
+            "label": "Department",
+            "choices": [
+                {"value": "hr", "label": "Human Resources"},
+                {"value": "it", "label": "IT"},
+                {"value": "finance", "label": "Finance"},
+                {"value": "marketing", "label": "Marketing"}
+            ],
+            "required": true
+        }
+    }
+}
